@@ -13,10 +13,14 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "install": "^0.13.0",
     "mongodb": "^4.1.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.14"
+  },
+  "optionalDependencies": {
+    "fsevents": "2.x"
   },
   "engines": {
     "node": "14.x"

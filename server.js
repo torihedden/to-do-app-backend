@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const port = 5000;
+// const port = 5000;
 const connection = require("./connection");
 const dotenv = require("dotenv");
 
@@ -76,6 +76,6 @@ app
     });
   });
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`App listening at http://localhost:${process.env.PORT}`);
 });

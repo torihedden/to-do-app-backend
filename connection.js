@@ -21,6 +21,10 @@ function getTodoItems() {
   return col.find().toArray();
 }
 
+function getTodoItem(id) {
+  return col.findOne({ _id: new ObjectId(id) });
+}
+
 async function createTodoItem(item) {
   await col.insertOne(item);
   return col.find().toArray();
@@ -36,12 +40,19 @@ async function updateTodoItem(update) {
 }
 
 async function deleteTodoItem(id) {
-  await col.deleteOne({ _id: ObjectId(id) });
+  await col.deleteOne({ _id: new ObjectId(id) });
+  return col.find().toArray();
+}
+
+async function deleteAllCompletedTodos() {
+  await col.deleteMany({ completed: true });
   return col.find().toArray();
 }
 
 module.exports.main = main;
 module.exports.getTodoItems = getTodoItems;
+module.exports.getTodoItem = getTodoItem;
 module.exports.createTodoItem = createTodoItem;
 module.exports.updateTodoItem = updateTodoItem;
 module.exports.deleteTodoItem = deleteTodoItem;
+module.exports.deleteCompletedTodos = deleteAllCompletedTodos;

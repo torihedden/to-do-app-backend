@@ -13,8 +13,16 @@ app.use(
   })
 );
 
+// THIS IS FAKE AND BAD. PLEASE DON'T RELY ON THIS FOR ACTUAL PRODUCTION AUTHENTICATION.
+app.post("/login", (req, res) => {
+  res.set("Content-Type", "application/json");
+  res.send({
+    token: "faketoken123456789",
+  });
+});
+
 app
-  .route("/")
+  .route("/todos")
   .get((req, res) => {
     res.set("Content-Type", "application/json");
     res.set("Access-Control-Allow-Origin", "*");
@@ -60,19 +68,43 @@ app
         res.end(JSON.stringify(result));
       });
     });
-  })
+  });
 
-  .delete((req, res) => {
-    const { id } = req.body;
+app.delete("/todos/completed", (req, res) => {
+  res.set("Content-Type", "application/json");
+  res.set("Access-Control-Allow-Origin", "*");
 
-    res.set("Content-Type", "application/json");
-    res.set("Access-Control-Allow-Origin", "*");
-
-    connection.main().then(() => {
-      connection.deleteTodoItem(id).then((result) => {
-        res.end(JSON.stringify(result));
-      });
+  connection.main().then(() => {
+    connection.deleteCompletedTodos().then((result) => {
+      res.end(JSON.stringify(result));
     });
   });
+});
+
+app.delete("/todos/:id", (req, res) => {
+  const { id } = req.params;
+
+  res.set("Content-Type", "application/json");
+  res.set("Access-Control-Allow-Origin", "*");
+
+  connection.main().then(() => {
+    connection.deleteTodoItem(id).then((result) => {
+      res.end(JSON.stringify(result));
+    });
+  });
+});
+
+app.get("/todos/:id", (req, res) => {
+  const { id } = req.params;
+
+  res.set("Content-Type", "application/json");
+  res.set("Access-Control-Allow-Origin", "*");
+
+  connection.main().then(() => {
+    connection.getTodoItem(id).then((result) => {
+      res.end(JSON.stringify(result));
+    });
+  });
+});
 
 app.listen(process.env.PORT, () => {});

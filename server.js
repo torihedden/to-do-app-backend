@@ -13,14 +13,6 @@ app.use(
   })
 );
 
-// THIS IS FAKE AND BAD. PLEASE DON'T RELY ON THIS FOR ACTUAL PRODUCTION AUTHENTICATION.
-app.post("/login", (req, res) => {
-  res.set("Content-Type", "application/json");
-  res.send({
-    token: "faketoken123456789",
-  });
-});
-
 app
   .route("/todos")
   .get((req, res) => {
@@ -58,7 +50,6 @@ app
 
     const { title } = req.body;
     const newTodo = {
-      userId: 2,
       title,
       completed: false,
     };

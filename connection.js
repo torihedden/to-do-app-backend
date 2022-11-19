@@ -12,17 +12,25 @@ const col = db.collection(process.env.COLLECTION);
 async function main() {
   try {
     await client.connect();
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   }
 }
 
 function getTodoItems() {
-  return col.find().toArray();
+  try {
+    return col.find().toArray();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function getTodoItem(id) {
-  return col.findOne({ _id: new ObjectId(id) });
+  try {
+    return col.findOne({ _id: new ObjectId(id) });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function createTodoItem(item) {

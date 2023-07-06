@@ -13,9 +13,18 @@ app.use(
   })
 );
 
+app.route("/health").get((_, res) => {
+  res.set("Content-Type", "application/json");
+  res.set("Access-Control-Allow-Origin", "*");
+
+  connection.main().then(() => {
+    res.end("200 OK");
+  });
+});
+
 app
   .route("/todos")
-  .get((req, res) => {
+  .get((_, res) => {
     res.set("Content-Type", "application/json");
     res.set("Access-Control-Allow-Origin", "*");
 

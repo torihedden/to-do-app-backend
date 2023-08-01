@@ -35,15 +35,40 @@ app
     });
   })
 
+  // .get("todos/priority", (req, res) => {
+  //   res.set("Content-Type", "application/json");
+  //   res.set("Access-Control-Allow-Origin", "*");
+
+  //   connection.main().then(() => {
+  //     connection.getTodoPriorities().then((result) => {
+  //       res.end(JSON.stringify(result));
+  //     });
+  //   });
+  // })
+
+  // app.get("/todos/:id", (req, res) => {
+  //   const { id } = req.params;
+
+  //   res.set("Content-Type", "application/json");
+  //   res.set("Access-Control-Allow-Origin", "*");
+
+  //   connection.main().then(() => {
+  //     connection.getTodoItem(id).then((result) => {
+  //       res.end(JSON.stringify(result));
+  //     });
+  //   });
+  // });
+
   .put((req, res) => {
     res.set("Content-Type", "application/json");
     res.set("Access-Control-Allow-Origin", "*");
 
-    const { _id, title, completed } = req.body;
+    const { _id, title, completed, priority } = req.body;
     const newTodo = {
       _id,
       title,
       completed,
+      priority,
     };
 
     connection.main().then(() => {
@@ -57,10 +82,11 @@ app
     res.set("Content-Type", "application/json");
     res.set("Access-Control-Allow-Origin", "*");
 
-    const { title } = req.body;
+    const { title, priority } = req.body;
     const newTodo = {
       title,
       completed: false,
+      priority,
     };
 
     connection.main().then(() => {
@@ -80,6 +106,17 @@ app.delete("/todos/completed", (req, res) => {
     });
   });
 });
+
+// app.delete("todos/all", (req, res) => {
+//   res.set("Content-Type", "application/json");
+//   res.set("Access-Control-Allow-Origin", "*");
+
+//   connection.main().then(() => {
+//     connection.deleteAllTodos().then((result) => {
+//       res.end(JSON.stringify(result));
+//     });
+//   });
+// });
 
 app.delete("/todos/:id", (req, res) => {
   const { id } = req.params;

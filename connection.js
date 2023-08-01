@@ -57,6 +57,23 @@ async function deleteAllCompletedTodos() {
   return col.find().toArray();
 }
 
+async function deleteAllTodos() {
+  await col.deleteMany({});
+  return col.find().toArray();
+}
+
+async function reorderTodos(update) {
+  return col.find().toArray();
+}
+
+function getTodoPriorities() {
+  const priorityCol = db.collection("todo_priority");
+  return priorityCol.find().toArray();
+  //   const db = client.db(process.env.DB);
+  // const col = db.collection(process.env.COLLECTION);
+  // return col.find().toArray();
+}
+
 module.exports.main = main;
 module.exports.getTodoItems = getTodoItems;
 module.exports.getTodoItem = getTodoItem;
@@ -64,3 +81,6 @@ module.exports.createTodoItem = createTodoItem;
 module.exports.updateTodoItem = updateTodoItem;
 module.exports.deleteTodoItem = deleteTodoItem;
 module.exports.deleteCompletedTodos = deleteAllCompletedTodos;
+module.exports.deleteAllTodos = deleteAllTodos;
+module.exports.reorderTodos = reorderTodos;
+module.exports.getTodoPriorities = getTodoPriorities;

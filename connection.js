@@ -1,15 +1,12 @@
-const { MongoClient } = require("mongodb");
-const ObjectId = require("mongodb").ObjectId;
-const dotenv = require("dotenv");
-
-dotenv.config();
+import { MongoClient, ObjectId } from "mongodb"
+import "dotenv/config"
 
 const uri = process.env.URI;
 const client = new MongoClient(uri);
 const db = client.db(process.env.DB);
 const col = db.collection(process.env.COLLECTION);
 
-async function main() {
+export async function main() {
   try {
     await client.connect();
   } catch (error) {
@@ -17,7 +14,7 @@ async function main() {
   }
 }
 
-function getTodoItems() {
+export const getTodoItems = () => {
   try {
     return col.find().toArray();
   } catch (error) {
@@ -25,7 +22,7 @@ function getTodoItems() {
   }
 }
 
-function getTodoItem(id) {
+export const getTodoItem = (id) => {
   try {
     return col.findOne({ _id: new ObjectId(id) });
   } catch (error) {
@@ -33,12 +30,12 @@ function getTodoItem(id) {
   }
 }
 
-async function createTodoItem(item) {
+export async function createTodoItem(item) {
   await col.insertOne(item);
   return col.find().toArray();
 }
 
-async function updateTodoItem(update) {
+export async function updateTodoItem(update) {
   const { _id, title, completed } = update;
   await col.updateOne(
     { _id: ObjectId(_id) },
@@ -47,20 +44,12 @@ async function updateTodoItem(update) {
   return col.find().toArray();
 }
 
-async function deleteTodoItem(id) {
+export async function deleteTodoItem(id) {
   await col.deleteOne({ _id: new ObjectId(id) });
   return col.find().toArray();
 }
 
-async function deleteAllCompletedTodos() {
+export async function deleteAllCompletedTodos() {
   await col.deleteMany({ completed: true });
   return col.find().toArray();
 }
-
-module.exports.main = main;
-module.exports.getTodoItems = getTodoItems;
-module.exports.getTodoItem = getTodoItem;
-module.exports.createTodoItem = createTodoItem;
-module.exports.updateTodoItem = updateTodoItem;
-module.exports.deleteTodoItem = deleteTodoItem;
-module.exports.deleteCompletedTodos = deleteAllCompletedTodos;

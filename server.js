@@ -1,10 +1,17 @@
-const express = require("express");
-const cors = require("cors");
-const app = express();
-const connection = require("./connection");
-const dotenv = require("dotenv");
+import "dotenv/config"
+import express from "express"
+import cors from "cors"
+import {
+  createTodoItem,
+  deleteAllCompletedTodos,
+  deleteTodoItem,
+  getTodoItem,
+  getTodoItems,
+  main,
+  updateTodoItem
+} from "./connection.js"
 
-dotenv.config();
+const app = express();
 
 app.use(express.json());
 app.use(
@@ -17,7 +24,7 @@ app.route("/health").get((_, res) => {
   res.set("Content-Type", "application/json");
   res.set("Access-Control-Allow-Origin", "*");
 
-  connection.main().then(() => {
+  main().then(() => {
     res.end("200 OK");
   });
 });
@@ -28,8 +35,8 @@ app
     res.set("Content-Type", "application/json");
     res.set("Access-Control-Allow-Origin", "*");
 
-    connection.main().then(() => {
-      connection.getTodoItems().then((result) => {
+    main().then(() => {
+      getTodoItems().then((result) => {
         res.end(JSON.stringify(result));
       });
     });
@@ -46,8 +53,8 @@ app
       completed,
     };
 
-    connection.main().then(() => {
-      connection.updateTodoItem(newTodo).then((result) => {
+    main().then(() => {
+      updateTodoItem(newTodo).then((result) => {
         res.end(JSON.stringify(result));
       });
     });
@@ -63,8 +70,8 @@ app
       completed: false,
     };
 
-    connection.main().then(() => {
-      connection.createTodoItem(newTodo).then((result) => {
+    main().then(() => {
+      createTodoItem(newTodo).then((result) => {
         res.end(JSON.stringify(result));
       });
     });
@@ -74,8 +81,8 @@ app.delete("/todos/completed", (req, res) => {
   res.set("Content-Type", "application/json");
   res.set("Access-Control-Allow-Origin", "*");
 
-  connection.main().then(() => {
-    connection.deleteCompletedTodos().then((result) => {
+  main().then(() => {
+    deleteAllCompletedTodos().then((result) => {
       res.end(JSON.stringify(result));
     });
   });
@@ -87,8 +94,8 @@ app.delete("/todos/:id", (req, res) => {
   res.set("Content-Type", "application/json");
   res.set("Access-Control-Allow-Origin", "*");
 
-  connection.main().then(() => {
-    connection.deleteTodoItem(id).then((result) => {
+  main().then(() => {
+    deleteTodoItem(id).then((result) => {
       res.end(JSON.stringify(result));
     });
   });
@@ -100,11 +107,11 @@ app.get("/todos/:id", (req, res) => {
   res.set("Content-Type", "application/json");
   res.set("Access-Control-Allow-Origin", "*");
 
-  connection.main().then(() => {
-    connection.getTodoItem(id).then((result) => {
+  main().then(() => {
+    getTodoItem(id).then((result) => {
       res.end(JSON.stringify(result));
     });
   });
 });
 
-app.listen(process.env.PORT, () => {});
+app.listen(process.env.PORT, () => { });
